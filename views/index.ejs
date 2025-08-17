@@ -14,6 +14,33 @@
         <h1 class="text-white">Gifflags</h1>
     </header>
     <div id="countriesList" class="w-full h-screen"> 
+        <% 
+        for (let i = 0; i < countries.length; i++) { 
+            const country = countries[i];
+        %>
+            <div class="w-full flex gap-2 p-3 border-b-1 border-gray-300">
+                <span id="s-order" class="font-bold self-center">#<%= i + 1 %></span>
+                <div class="relative w-28 h-auto" onclick="console.log(countriesList); OpenGifChange('<%= country.name %>')">
+                    <i class="fa-solid fa-pen absolute left-1 text-gray-500 rounded-full p-2 bg-[#ffffff80] top-1"></i>
+                    <img class="w-28 h-28 object-cover rounded" src="<%= country.image %>" alt="" loading="lazy">
+                </div>
+                <div class="flex-1">
+                    <div class="w-full flex gap-2 justify-center items-center">
+                        <img class="w-8" id="c-flag" src="<%= country.flag %>" alt="" loading="lazy">
+                        <h1 id="c-name" class="text-lg font-bold">
+                            <%= country.name %>
+                        </h1>
+                    </div>
+                    <div class="w-full flex flex-col justify-center items-center">
+                        <p id="<%= country.name %>-score" class="text-orange-600 font-extrabold text-2xl"><%= country.score %></p>
+                    </div>
+                    <div class="flex gap-2 mt-2">
+                        <button onclick="handleIncrease('<%= country.name %>')" class="cursor-pointer hover:bg-green-700 flex-1 bg-green-600 text-white px-5 py-1 rounded-lg border-green-700 border-3"><i class="text-xl fa-solid fa-caret-up"></i></button>
+                        <button onclick="handleDecrease('<%= country.name %>')" class="cursor-pointer hover:bg-red-700 flex-1 bg-red-600 text-white px-5 py-1 rounded-lg border-red-700 border-3"><i class="text-xl fa-solid fa-caret-down"></i></button>
+                    </div>
+                </div>
+            </div>
+        <% } %>
     </div>
 
     <div id="loading" class="w-full h-screen flex justify-center items-center absolute top-0 bg-black">
@@ -24,5 +51,8 @@
     </div>
     
 </body>
+<script>
+  const countries = <%- JSON.stringify(countries) %>;
+</script>
 <script src="/main.js"></script>
 </html>

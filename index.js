@@ -17,9 +17,17 @@ app.use(cors({
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 
-// SSR :
 app.get("/", (req, res) => {
-  res.render("index");
+    supabase
+        .from('countries')
+        .select('*')
+        .order('score', { ascending: false })
+        .then(({ data, error }) => {
+            if (error) {
+                return res.status(500).json({ error: error.message });
+            }
+            res.render("index", { countries: data });
+        });
 });
 
 // API Endpoints
@@ -40,18 +48,6 @@ app.post("/handleDecrease", async (req, res) => {
             return res.status(500).json({ error: error.message });
         }
         res.json({ message: 'Score Decremented', country: countryName, data });
-})
-app.get("/Countries", (req, res) => {
-    supabase
-        .from('countries')
-        .select('*')
-        .order('score', { ascending: false })
-        .then(({ data, error }) => {
-            if (error) {
-                return res.status(500).json({ error: error.message });
-            }
-            res.json(data);
-        });
 })
 app.post("/updateGif", async (req, res) => {
     const countryName = req.body.countryName;

@@ -1,44 +1,3 @@
-let countries = [];
-function getCountries() {
-    fetch("/Countries")
-        .then(response => response.json())
-        .then(json => {setCountries(json); countries = json;})
-}
-function setCountries(data){
-    let order = 1;
-    const countriesList = document.getElementById('countriesList');
-    countriesList.innerHTML = '';
-
-    data.forEach(country => {
-        const countryDiv = document.createElement('div');
-        countryDiv.className = "w-full flex gap-2 p-3 border-b-1 border-gray-300";
-        countryDiv.innerHTML = `
-            <span id="s-order" class="font-bold self-center">#${order}</span>
-            <div class="relative w-28 h-auto" onclick="OpenGifChange('${country.name}')">
-                <i class="fa-solid fa-pen absolute left-1 text-gray-500 rounded-full p-2 bg-[#ffffff80] top-1"></i>
-                <img class="w-28 h-full object-cover rounded" src="${country.image}" alt="" loading="lazy">
-            </div>
-            <div class="flex-1">
-                <div class="w-full flex gap-2 justify-center items-center">
-                    <img class="w-8" id="c-flag" src="${country.flag}" alt="" loading="lazy">
-                    <h1 id="c-name" class="text-lg font-bold">
-                        ${country.name}
-                    </h1>
-                </div>
-                <div class="w-full flex flex-col justify-center items-center">
-                    <p id="${country.name}-score" class="text-orange-600 font-extrabold text-2xl">${country.score}</p>
-                </div>
-                <div class="flex gap-2 mt-2">
-                    <button onclick="(handleIncrease('${country.name}'))" class="cursor-pointer hover:bg-green-700 flex-1 bg-green-600 text-white px-5 py-1 rounded-lg border-green-700 border-3"><i class="text-xl fa-solid fa-caret-up"></i></button>
-                    <button onclick="(handleDecrease('${country.name}'))" class="cursor-pointer hover:bg-red-700 flex-1 bg-red-600 text-white px-5 py-1 rounded-lg border-red-700 border-3"><i class="text-xl fa-solid fa-caret-down"></i></button>
-                </div>
-            </div>
-        `;
-        countriesList.appendChild(countryDiv);
-        order++;
-    });
-    document.getElementById('loading').style.display = 'none';
-}
 function handleDecrease(country_name){
     fetch("/handleDecrease", {
         method: "POST",
@@ -115,8 +74,10 @@ function OpenGifChange(country_name){
                 document.getElementById('status-message').style.color = 'green';
             }
           });
-        
     });
 }
-
-getCountries()
+window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        document.getElementById('loading').remove();
+    }, 2000);
+})
